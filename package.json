@@ -1,0 +1,35 @@
+{
+  "name": "worker-td-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rollup -c"
+  },
+  "keywords": [],
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@9.3.0+sha512.ee7b93e0c2bd11409c6424f92b866f31d3ea1bef5fbe47d3c7500cdc3c9668833d2e55681ad66df5b640c61fa9dc25d546efa54d76d7f8bf54b13614ac293631",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "rollup": "^4.18.0",
+    "rollup-plugin-dts": "^6.1.1",
+    "rollup-plugin-node-externals": "^7.1.2",
+    "rollup-plugin-tsconfig-paths": "^1.5.2",
+    "rollup-plugin-typescript2": "^0.36.0"
+  },
+  "peerDependencies": {
+    "@cloudflare/workers-types": "^4.20240620.0",
+    "eventemitter3": "^5.0.1",
+    "telegram-typings": "^5.0.0"
+  }
+}
