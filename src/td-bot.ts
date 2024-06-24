@@ -5,6 +5,8 @@ import { Update } from "telegram-typings";
 export class TDBot extends TelegramBot {
   async launch(request: Request) {
     const json = await request.json<Update>();
-    this.update(json);
+    if (json) {
+      this.update(json);
+    }
   }
 }

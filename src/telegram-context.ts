@@ -7,7 +7,7 @@ import {
 import { TelegramApi } from "./telegram-api";
 
 export class TelegramContext {
-  private api: TelegramApi;
+  private readonly api: TelegramApi;
   update: Update;
 
   constructor(token: string, update: Update) {
@@ -40,6 +40,7 @@ export class TelegramContext {
     extra?: Omit<AnswerInlineQuery, "results">
   ) {
     return this.api.answerInlineQuery({
+      inline_query_id: this.update.inline_query.id,
       results,
       ...extra,
     });

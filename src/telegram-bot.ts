@@ -18,7 +18,7 @@ export class TelegramBot extends EventEmitter<EventType> {
     super();
   }
 
-  override emit<T extends EventType>(event: T, update: Update): boolean {
+  override emit<T extends EventType>(event: T, update: Update): boolean {    
     const context = new TelegramContext(this.token, update);
     if (this.eventNames().includes(event)) {
       this.listeners(event).forEach((cb) => cb(context));
@@ -28,7 +28,7 @@ export class TelegramBot extends EventEmitter<EventType> {
   }
 
   onInlineQuery(fn: (context: TelegramContext) => void): this {
-    this.on("inline", fn);
+    this.on("inline", fn);    
     return this;
   }
 
