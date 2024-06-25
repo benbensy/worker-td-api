@@ -1,3 +1,3 @@
-import { TDBot } from "./td-bot";
+import { TelegramBot } from "./telegram-bot";
 
-export default TDBot;
+export default TelegramBot;

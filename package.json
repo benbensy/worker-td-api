@@ -29,7 +29,6 @@
   },
   "peerDependencies": {
     "@cloudflare/workers-types": "^4.20240620.0",
-    "eventemitter3": "^5.0.1",
     "telegram-typings": "^5.0.0"
   }
 }

@@ -24,7 +24,7 @@ export default defineConfig(() => {
       name: "[name].js",
       format: "es",
     },
-    plugins: [...commonPlugins, terser()],
+    plugins: [...commonPlugins],
   };
 
   /** @type {import('rollup').RollupOptions} */
