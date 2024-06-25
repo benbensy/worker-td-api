@@ -1,8 +1,7 @@
 import { TelegramContext } from "./telegram-context";
-import { Request } from "@cloudflare/workers-types";
 import { Update } from "telegram-typings";
 
-type EventType = "text" | "photo" | "inline" | "unknown";
+type EventType = "text" | "photo" | "audio" | "inline" | "unknown";
 
 interface ContextFn {
   (context: TelegramContext): Promise<void>;
@@ -24,10 +23,9 @@ export class TelegramBot {
     const context = new TelegramContext(this.token, update);
 
     if (Array.from(this.eventPool.keys()).includes(event)) {
-      for await (const cb of this.eventPool.get(event)) {
+      for (const cb of this.eventPool.get(event)) {
         await cb(context);
       }
-      return new Response("ok");
     }
   }
 
@@ -39,6 +37,28 @@ export class TelegramBot {
   onMatch(regx: RegExp, fn: ContextFn): this {
     this.on("text", async (ctx) => {
       if (regx.test(ctx.update.message.text)) {
+        await fn(ctx);
+      }
+    });
+    return this;
+  }
+
+  onCommand(command: string, fn: ContextFn): this {
+    this.on("text", async (ctx) => {
+      const regx = new RegExp(`^/${command}(.*)`);
+      if (
+        ctx.update.message.entities?.some((x) => x.type === "bot_command") &&
+        regx.test(ctx.update.message.text)
+      ) {
+        await fn(ctx);
+      }
+    });
+    return this;
+  }
+
+  onReply(fn: ContextFn) {
+    this.on("text", async (ctx) => {
+      if (ctx.update.message.reply_to_message) {
         await fn(ctx);
       }
     });
@@ -65,11 +85,13 @@ export class TelegramBot {
   }
 
   async launch(request: Request) {
-    const json = await request.json<Update>();
     const url = new URL(request.url);
     if (`/${this.token}` === url.pathname) {
-      if (json) {
-        await this.update(json);
+      if (request.method === "POST") {
+        const json = (await request.json()) as Update;
+        if (json) {
+          await this.update(json);
+        }
       }
     }
   }

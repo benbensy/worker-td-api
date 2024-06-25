@@ -1,4 +1,10 @@
-import { AnswerInlineQuery, SendMessage, SendPhoto } from "telegram-typings";
+import {
+  AnswerInlineQuery,
+  ForwardMessage,
+  SendAudio,
+  SendMessage,
+  SendPhoto,
+} from "telegram-typings";
 
 export class TelegramApi {
   private readonly baseUrl: string;
@@ -18,12 +24,16 @@ export class TelegramApi {
   }
 
   private async callGetApi<T extends object>(path: string): Promise<T> {
-    const res = await fetch(this.baseUrl + path)    
-    const json = await res.json()
-    return json
+    const res = await fetch(this.baseUrl + path);
+    const json = await res.json();
+    return json;
   }
 
-  async sendMessage(payload: SendMessage) {    
+  private async callUploadApi() {
+    
+  }
+
+  async sendMessage(payload: SendMessage) {
     return await this.callApi("/sendMessage", payload);
   }
 
@@ -32,11 +42,20 @@ export class TelegramApi {
   }
 
   async sendPhoto(payload: SendPhoto) {
-    return await this.callApi('/sendPhoto', payload)
+    if (typeof payload.photo === "string")
+      return await this.callApi("/sendPhoto", payload);
+  }
+
+  async sendAudio(payload: SendAudio) {
+    return await this.callApi("/sendAudio", payload);
+  }
+
+  async forwardMessage(payload: ForwardMessage) {
+    return await this.callApi('/forwardMessage', payload)
   }
 
   async getMe() {
-    const json = await this.callGetApi('/getMe')
-    return json
+    const json = await this.callGetApi("/getMe");
+    return json;
   }
 }
