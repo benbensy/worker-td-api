@@ -29,8 +29,16 @@ export class TelegramApi {
     return json;
   }
 
-  private async callUploadApi() {
+  private async callUploadApi(path: string, data?: object) {
+    const formData = new FormData();
+    Object.entries(data).forEach(([k, v]) => {
+      formData.append(k, v);
+    });
     
+    await fetch(this.baseUrl + path, {
+      method: "POST",
+      body: formData,
+    });
   }
 
   async sendMessage(payload: SendMessage) {
@@ -44,6 +52,9 @@ export class TelegramApi {
   async sendPhoto(payload: SendPhoto) {
     if (typeof payload.photo === "string")
       return await this.callApi("/sendPhoto", payload);
+    else {
+      this.callUploadApi("/sendPhoto", payload);
+    }
   }
 
   async sendAudio(payload: SendAudio) {
@@ -51,7 +62,7 @@ export class TelegramApi {
   }
 
   async forwardMessage(payload: ForwardMessage) {
-    return await this.callApi('/forwardMessage', payload)
+    return await this.callApi("/forwardMessage", payload);
   }
 
   async getMe() {
