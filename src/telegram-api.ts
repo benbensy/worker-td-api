@@ -1,4 +1,5 @@
 import {
+  AnswerCallbackQuery,
   AnswerInlineQuery,
   ForwardMessage,
   SendAudio,
@@ -34,7 +35,7 @@ export class TelegramApi {
     Object.entries(data).forEach(([k, v]) => {
       formData.append(k, v);
     });
-    
+
     await fetch(this.baseUrl + path, {
       method: "POST",
       body: formData,
@@ -47,6 +48,10 @@ export class TelegramApi {
 
   async answerInlineQuery(payload: AnswerInlineQuery) {
     return await this.callApi("/answerInlineQuery", payload);
+  }
+
+  async answerCallbackQuery(payload: AnswerCallbackQuery) {
+    return await this.callApi("/answerCallbackQuery", payload);
   }
 
   async sendPhoto(payload: SendPhoto) {

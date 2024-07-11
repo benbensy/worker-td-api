@@ -7,6 +7,7 @@ import {
   SendAudio,
   InputFile,
   ForwardMessage,
+  AnswerCallbackQuery,
 } from "telegram-typings";
 import { TelegramApi } from "./telegram-api";
 
@@ -41,11 +42,20 @@ export class TelegramContext {
 
   async answerInlineQuery(
     results: InlineQueryResult[],
-    extra?: Omit<AnswerInlineQuery, "results">
+    extra?: Omit<AnswerInlineQuery, "inline_query_id" | "results">
   ) {
     return await this.api.answerInlineQuery({
       inline_query_id: this.update.inline_query.id,
       results,
+      ...extra,
+    });
+  }
+
+  async answerCallbackQuery(
+    extra?: Omit<AnswerCallbackQuery, "callback_query_id">
+  ) {
+    return await this.api.answerCallbackQuery({
+      callback_query_id: this.update.callback_query.id,
       ...extra,
     });
   }

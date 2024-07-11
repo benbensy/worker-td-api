@@ -1,7 +1,7 @@
 import { TelegramContext } from "./telegram-context";
 import { Update } from "telegram-typings";
 
-type EventType = "text" | "photo" | "audio" | "inline" | "unknown";
+type EventType = "text" | "photo" | "audio" | "inline" | "callback" | "unknown";
 
 interface ContextFn {
   (context: TelegramContext): Promise<void>;
@@ -31,6 +31,11 @@ export class TelegramBot {
 
   onInlineQuery(fn: ContextFn): this {
     this.on("inline", fn);
+    return this;
+  }
+
+  onCallbackQuery(fn: ContextFn): this {
+    this.on("callback", fn);
     return this;
   }
 
@@ -76,6 +81,8 @@ export class TelegramBot {
       }
     } else if (update.inline_query) {
       return "inline";
+    } else if (update.callback_query) {
+      return "callback";
     }
   }
 
