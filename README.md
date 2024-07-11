@@ -2,7 +2,7 @@
 
 telegram api for cloudflare workers
 
-## Useage
+## Usage
 
 - `npm create cloudflare@latest`
 - `npx wrangler login`
@@ -10,7 +10,7 @@ telegram api for cloudflare workers
 - `npx wrangler deploy`
 - Open this url in your browser to set your webhook `https://api.telegram.org/bot${SECRET_TELEGRAM_API_TOKEN}/setWebhook?url=${YOUR_WORKER_URL}/${SECRET_TELEGRAM_API_TOKEN}`
 
-## example
+## Example
 
 ```typescript
 import TDBot from "worker-td-api";
